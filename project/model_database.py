@@ -21,12 +21,12 @@ class Database:
         conn.close()
 
     @staticmethod
-    def add_idea(name: str, descrip: str, image: str):
+    def add_rezume(name: str, role: str, skills: str):
         conn = Database.conn()
         cursor = conn.cursor()
-        query = "INSERT INTO ideas (name, description, image) VALUES(NULL, ?, ?, ?)"
+        query = "INSERT INTO rezumes (name, role, skills) VALUES(NULL, ?, ?, ?)"
         try:
-            cursor.execute(query, (name, descrip, image))
+            cursor.execute(query, (name, role, skills))
             conn.commit()
             print("Идея добавлена")
             return True
@@ -38,10 +38,10 @@ class Database:
 
 
     @staticmethod
-    def check_idea(name: str):
+    def output_rezume(name: str):
         conn = Database.conn()
         cursor = conn.cursor()
-        query = "SELECT * FROM ideas WHERE name LIKE = ?"
+        query = ""
         try:
             cursor.execute(query, (name,))
             conn.commit()
