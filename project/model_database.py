@@ -21,34 +21,48 @@ class Database:
         conn.close()
 
     @staticmethod
-    def add_rezume(name: str, role: str, skills: str):
+    def add_resume(name: str, role: str, skills: str):
         conn = Database.conn()
         cursor = conn.cursor()
-        query = "INSERT INTO rezumes (name, role, skills) VALUES(NULL, ?, ?, ?)"
+        query = "INSERT INTO resumes (name, role, skills) VALUES(NULL, ?, ?, ?)"
         try:
             cursor.execute(query, (name, role, skills))
             conn.commit()
-            print("Идея добавлена")
+            print("Информация добавлена в БД")
             return True
         except sqlite3.Error as e:
             print("Ошибка получения доступа к БД" + str(e))
             return None
         finally:
             conn.close()
-
 
     @staticmethod
-    def output_rezume(name: str):
+    def get_all_resumes():
         conn = Database.conn()
         cursor = conn.cursor()
-        query = ""
+        query = "SELECT id, name, role, skills FROM resumes"
         try:
-            cursor.execute(query, (name,))
+            cursor.execute(query)
+            # Получаем результаты запроса
+            results = cursor.fetchall()
+            # Преобразуем результаты запроса в список словарей
+            resumes = []
+            for result in results:
+                id, name, role, skills = result
+                skills = skills.split(",")  # Предполагаем, что навыки хранятся в виде строки с разделителем-запятой
+                resume = {"id": id,
+                          "name": name,
+                          "role": role,
+                          "skills": skills}
+                resumes.append(resume)
             conn.commit()
-            print("Идея добавлена")
-            return True
+            print("Информация передана")
+            return resumes
         except sqlite3.Error as e:
             print("Ошибка получения доступа к БД" + str(e))
             return None
         finally:
             conn.close()
+
+
+
