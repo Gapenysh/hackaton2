@@ -7,7 +7,6 @@ class Resume:
         resumes = []
         for result in results:
             id, name, role, skills = result
-            skills = skills.split(",")  # Предполагаем, что навыки хранятся в виде строки с разделителем-запятой
             resume = {"id": id,
                       "name": name,
                       "role": role,
