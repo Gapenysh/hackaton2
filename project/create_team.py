@@ -10,58 +10,24 @@ def get_db_connection():
 
 @app.route('/construcktor/teams', methods=['POST'])
 def create_team():
-    data = request.get_json()
-    conn = get_db_connection()
-    try:
-        conn.execute('INSERT INTO teams (name, size, roles, members, status) VALUES (?, ?, ?, ?, ?)',
-                     (data['name'], data['size'], ','.join(data['roles']), ','.join(data['members']), 'pending'))
-        conn.commit()
-        conn.close()
-        print("Команда создана")
-        return jsonify({'message': 'Team created successfully'})
-    except sqlite3.Error as e:
-        print("Ошибка получения доступа к БД" + str(e))
-        return None
-    finally:
-        conn.close()
+    name = request.json.get("teamName", None)
+    size = request.json.get("teamSize", None)
+    roles = request.json.get("selectedRoles", None)
+    if (name, size, roles) is not None:
+        res = Database.add_team(name, size, roles)
+        if res:
+            print("Команда добавлена в БД")
+            return jsonify({"message": "Command added"})
+        else:
+            print("Ошибка создания команды")
+            return jsonify({"error": "Command not added"})
+    else:
+        print("Переменная яв-ся None")
+        return jsonify({"error": "parametr is None"})
 
-@app.route('/construcktor/teams', methods=['GET'])
-def get_team():
-    conn = get_db_connection()
-    teams = conn.execute('SELECT * FROM teams').fetchall()
-    result = []
-    for team in teams:
-        members = team['members'].split(',') if team['members'] else []
-        result.append({
-            'id': team['id'],
-            'name': team['name'],
-            'size': team['size'],
-            'roles': team['roles'].split(','),
-            'members': members,
-            'status': team['status']
-        })
-    conn.close()
+@app.route("/construcktor/teams", methods=["GET"])
+def show_teams():
+    result = Database.get_all_teams()
+    if result is None:
+        return "Error: Could not access the database", 500
     return jsonify(result)
-
-
-@app.route('/api/teams/<int:team_id>', methods=['PUT'])
-def update_team(team_id):
-    data = request.get_json()
-    conn = get_db_connection()
-
-    # Обновить статус команды, если необходимо
-    team = conn.execute('SELECT members, status FROM teams WHERE id = ?', (team_id,)).fetchone()
-    members = team['members'].split(',') if team['members'] else []
-    ready_members = [member for member in members if member.endswith('(ready)')]
-    if data['status'] == 'ready' and len(ready_members) * 2 < len(members):
-        conn.close()
-        return jsonify({'message': 'Not enough members are ready'}), 400
-    elif data['status'] == 'pending' and len(ready_members) * 2 >= len(members):
-        conn.close()
-        return jsonify({'message': 'Cannot change status to pending'}), 400
-
-    conn.execute('UPDATE teams SET status = ? WHERE id = ?', (data['status'], team_id))
-    conn.commit()
-
-    conn.close()
-    return jsonify({'message': 'Team updated successfully'})

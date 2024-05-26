@@ -77,5 +77,42 @@ class Database:
         finally:
             conn.close()
 
+    @staticmethod
+    def add_team(name: str, size: int, roles: str):
+        conn = Database.conn_teams()
+        cursor = conn.cursor()
+        query = "INSERT INTO teams (name, size, roles) VALUES(?, ?, ?)"
+        try:
+            cursor.execute(query, (name, size, roles))
+            conn.commit()
+            print("Информация добавлена в БД")
+            return True
+        except sqlite3.Error as e:
+            print("Ошибка получения доступа к БД" + str(e))
+            return None
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_all_teams():
+        conn = Database.conn_teams()
+        cursor = conn.cursor()
+        query = "SELECT * FROM teams"
+        try:
+            cursor.execute(query)
+            # Получаем результаты запроса
+            results = cursor.fetchall()
+            # Преобразуем результаты запроса в список словарей
+            resumes = Resume.create_dict_teams(results)
+            conn.commit()
+            print("Информация передана")
+            return resumes
+        except sqlite3.Error as e:
+            print("Ошибка получения доступа к БД" + str(e))
+            return None
+        finally:
+            conn.close()
+
+
 
 
