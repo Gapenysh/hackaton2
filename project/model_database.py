@@ -3,6 +3,25 @@ from project import app, DB_NAME, DB_NAME_TEAMS
 from project.model_user import Resume
 
 class Database:
+
+
+    @staticmethod
+    def conn_teams():
+        conn = None
+        try:
+            conn = sqlite3.connect(DB_NAME_TEAMS)
+        except sqlite3.Error as e:
+            print("Ошибка подключения к БД" + str(e))
+        return conn
+
+    @staticmethod
+    def create_db_for_teams():
+        conn = Database.conn_teams()
+        with app.open_resource("sq_db2.sql", "r") as f:
+            conn.cursor().executescript(f.read())
+        conn.commit()
+        conn.close()
+
     @staticmethod
     def conn():
         conn = None
@@ -13,17 +32,6 @@ class Database:
         return conn
 
     @staticmethod
-    def conn_row():
-        conn = None
-        try:
-            conn = sqlite3.connect(DB_NAME_TEAMS)
-            conn.row_factory = sqlite3.Row
-        except sqlite3.Error as e:
-            print("Ошибка подключения к БД" + str(e))
-        return conn
-
-
-    @staticmethod
     def create_db():
         conn = Database.conn()
         with app.open_resource("sq_db.sql", "r") as f:
@@ -31,13 +39,7 @@ class Database:
         conn.commit()
         conn.close()
 
-    @staticmethod
-    def create_db_for():
-        conn = Database.conn_row()
-        with app.open_resource("sq_db.sql", "r") as f:
-            conn.cursor().executescript(f.read())
-        conn.commit()
-        conn.close()
+
 
     @staticmethod
     def add_resume(name: str, role: str, skills: str):
