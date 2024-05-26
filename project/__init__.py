@@ -6,4 +6,4 @@ app = Flask(__name__)
 DB_NAME = "resumes.db"
 CORS(app)
 
-from . import constructor
+from . import constructor, create_resume

@@ -1,5 +1,6 @@
 import sqlite3
 from project import app, DB_NAME
+from project.model_user import Resume
 
 class Database:
     @staticmethod
@@ -24,7 +25,7 @@ class Database:
     def add_resume(name: str, role: str, skills: str):
         conn = Database.conn()
         cursor = conn.cursor()
-        query = "INSERT INTO resumes (name, role, skills) VALUES(NULL, ?, ?, ?)"
+        query = "INSERT INTO resumes (name, role, skills) VALUES(?, ?, ?)"
         try:
             cursor.execute(query, (name, role, skills))
             conn.commit()
@@ -46,15 +47,7 @@ class Database:
             # Получаем результаты запроса
             results = cursor.fetchall()
             # Преобразуем результаты запроса в список словарей
-            resumes = []
-            for result in results:
-                id, name, role, skills = result
-                skills = skills.split(",")  # Предполагаем, что навыки хранятся в виде строки с разделителем-запятой
-                resume = {"id": id,
-                          "name": name,
-                          "role": role,
-                          "skills": skills}
-                resumes.append(resume)
+            resumes = Resume.create_dict_resume(results)
             conn.commit()
             print("Информация передана")
             return resumes

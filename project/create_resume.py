@@ -2,7 +2,7 @@ from project import app
 from flask import request, jsonify
 from project.model_database import Database
 
-@app.route("/create_resume", methods=["POST", "GET"])
+@app.route("/construcktor/create_resume", methods=["POST", "GET"])
 def create_resume():
     if request.method == "POST":
         name = request.json.get("name", None)
@@ -13,10 +13,10 @@ def create_resume():
             res = Database.add_resume(name, role, skills)
             if res:
                 print("Резюме создано")
-                return jsonify({"message": "Resume created"}), 200
+                return jsonify({"message": "Resume created"})
             else:
                 print("Ошибка создания резюме")
-                return jsonify({"error":"Resume not created"}), 401
+                return jsonify({"error": "Resume not created"})
 
 
 
