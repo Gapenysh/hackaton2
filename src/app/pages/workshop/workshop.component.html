@@ -1,0 +1,238 @@
+<body>
+	<div class="container">
+		<div class="levaya">
+			<img
+				class="imagecl"
+				src="../../../assets/images/198c43c29380ab4a9421796d89ba3525.png"
+				alt="Аватарка"
+			/>
+			<p class="imya">
+				Инсаф Ахметзянов
+				<img
+					class="iconout"
+					src="../../../assets/icons/Property-1_Variant10.png"
+					alt=""
+				/>
+			</p>
+			<p class="vihod">Выйти</p>
+			<div class="knopka-razdel">
+				<img
+					class="iconuved"
+					src="../../../assets/icons/Property 1=Default.png"
+					alt=""
+				/>
+				<p class="uved">Нет новых уведомлений</p>
+			</div>
+			<p class="ramka"></p>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant2.png"
+				/>
+				<p class="vkl">Главная</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant3.png"
+				/>
+				<p class="vkl">Мой профиль</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant4.png"
+				/>
+				<p class="vkl">Команды</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/constructor-logo--transformed.png"
+				/>
+				<p class="videlenie">Констркутор</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant5.png"
+				/>
+				<p class="vkl">Таймлайн</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant6.png"
+				/>
+				<p class="vkl">Интенсив</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property-1_Variant7.png"
+				/>
+				<p class="vkl">Задачи</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property-1_Variant8.png"
+				/>
+				<p class="vkl">решение</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property-1_Variant9.png"
+				/>
+				<p class="vkl">О мероприятии</p>
+			</div>
+			<img
+				class="imagehacaton"
+				src="../../../assets/icons/hacatonRUS.png"
+				alt="ХакатонРус"
+			/>
+		</div>
+		<h1>Конструктор команды</h1>
+		<div class="osnova">
+			<div class="text">
+				<p class="p-gray-pervoe">
+					Этот раздел для тех, кто хочет поучавствовать в хакатоне любой ценой и
+					не только! В этом разделе ты можешь:
+				</p>
+				<p class="p-gray">
+					&bull;&nbsp; Заявить о своей кандидатуре другим командам, просто
+					заполнив резюме;
+				</p>
+
+				<p class="p-gray">
+					&bull;&nbsp; Создать новую команду, в которую могут вступить такие же
+					безкомандные специалисты;
+				</p>
+				<p class="p-gray">
+					&bull;&nbsp; Также в этом разделе лидеры команд могут найти новых
+					участников для своей команды;
+				</p>
+				<button class="ideabutton" routerLink="/fill-resume">
+					Заполнить резюме
+				</button>
+				<button class="ideabutton" (click)="showLonersList()">
+					Список одиночек
+				</button>
+				<button class="ideabutton" (click)="showCreateTeamForm()">
+					Создать макет команды
+				</button>
+				<button class="ideabutton" (click)="showTeams()">
+					Посмотреть список команд
+				</button>
+				<div *ngIf="showLoners">
+					<div class="filter-container">
+						<select
+							class="filter-select"
+							id="role-filter"
+							(change)="filterLoners($event)"
+						>
+							<option value="">Все роли</option>
+							<option value="backend">Backend</option>
+							<option value="frontend">Frontend</option>
+							<option value="designer">Designer</option>
+							<option value="analyst">Analyst</option>
+						</select>
+					</div>
+
+					<table class="loners-table">
+						<thead>
+							<tr>
+								<th>Имя</th>
+								<th></th>
+								<th>Навыки</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let loner of loners">
+								<td>{{ loner.name }}</td>
+								<td>{{ loner.role }}</td>
+								<td>{{ loner.skills }}</td>
+								<td class="addpeople">
+									<button class="btn-image">
+										<img
+											src="../../../assets/icons/icons8-add-user-male-50.png"
+										/>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div *ngIf="createTeamFormShown">
+					<h2 style="margin-left: 15px">Создание макета команды</h2>
+					<div class="comanda">
+						<input
+							[(ngModel)]="teamName"
+							type="text"
+							placeholder="Введи название команды"
+						/>
+					</div>
+
+					<div class="comanda">
+						<select [(ngModel)]="teamSize" (ngModelChange)="onTeamSizeChange()">
+							<option [ngValue]="null" disabled disabled>
+								Количество участников
+							</option>
+							<option *ngFor="let size of [2, 3, 4, 5, 6, 7]" [ngValue]="size">
+								{{ size }}
+							</option>
+						</select>
+					</div>
+
+					<div class="comanda" *ngIf="teamSize">
+						<div *ngFor="let index of getArray(teamSize); let i = index">
+							<label>Role {{ i + 1 }}:</label>
+							<select [(ngModel)]="selectedRoles[i]">
+								<option [ngValue]="null" disabled disabled>
+									Выберите роли
+								</option>
+								<option *ngFor="let role of roles" [ngValue]="role">
+									{{ role }}
+								</option>
+							</select>
+						</div>
+					</div>
+					<button
+						class="ideabutton"
+						(click)="createTeam()"
+						[disabled]="selectedRoles.length !== teamSize"
+					>
+						Cоздать команду
+					</button>
+
+					<div style="display: flex" *ngIf="showImages">
+						<h2 style="margin-left: 0px">{{ teamName }}</h2>
+						<div class="image-container">
+							<div
+								class="otstupimage"
+								*ngFor="let item of teamImages; let i = index"
+							>
+								<img class="kartochka" [src]="item.image" [alt]="item.role" />
+								<img
+									[src]="buttonImageSrc[i]"
+									class="button-image"
+									(mouseover)="handleMouseover(i)"
+									(click)="handleButtonClick(i)"
+								/>
+							</div>
+						</div>
+					</div>
+					<button class="ideabutton" routerLink="/construcktor">
+						Загрузить макет команды
+					</button>
+				</div>
+				<div *ngIf="showTeam">
+					<h1>Список свободных команд</h1>
+					<img class="dlyakartochki" src="../../../assets/images/kartochki.png">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

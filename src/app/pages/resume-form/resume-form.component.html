@@ -1,0 +1,167 @@
+<body>
+	<div class="container">
+		<div class="levaya">
+			<img
+				class="imagecl"
+				src="../../../assets/images/198c43c29380ab4a9421796d89ba3525.png"
+				alt="Аватарка"
+			/>
+			<p class="imya">
+				Инсаф Ахметзянов
+				<img
+					class="iconout"
+					src="../../../assets/icons/Property-1_Variant10.png"
+					alt=""
+				/>
+			</p>
+			<p class="vihod">Выйти</p>
+			<div class="knopka-razdel">
+				<img
+					class="iconuved"
+					src="../../../assets/icons/Property 1=Default.png"
+					alt=""
+				/>
+				<p class="uved">Нет новых уведомлений</p>
+			</div>
+			<p class="ramka"></p>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant2.png"
+				/>
+				<p class="vkl">Главная</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant3.png"
+				/>
+				<p class="vkl">Мой профиль</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant4.png"
+				/>
+				<p class="vkl">Команды</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/constructor-logo--transformed.png"
+				/>
+				<p class="videlenie">Констркутор</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant5.png"
+				/>
+				<p class="vkl">Таймлайн</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property 1=Variant6.png"
+				/>
+				<p class="vkl">Интенсив</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property-1_Variant7.png"
+				/>
+				<p class="vkl">Задачи</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property-1_Variant8.png"
+				/>
+				<p class="vkl">решение</p>
+			</div>
+			<div class="knopka-razdel">
+				<img
+					class="iconglav"
+					src="../../../assets/icons/Property-1_Variant9.png"
+				/>
+				<p class="vkl">О мероприятии</p>
+			</div>
+			<img
+				class="imagehacaton"
+				src="../../../assets/icons/hacatonRUS.png"
+				alt="ХакатонРус"
+			/>
+		</div>
+		<h1>Конструктор команды</h1>
+		<div class="osnova">
+			<div class="text">
+				<p class="p-gray-pervoe">
+					Этот раздел для тех, кто хочет поучавствовать в хакатоне любой ценой и
+					не только! В этом разделе ты можешь:
+				</p>
+				<p class="p-gray">
+					&bull;&nbsp; Заявить о своей кандидатуре другим командам, просто
+					заполнив резюме;
+				</p>
+
+				<p class="p-gray">
+					&bull;&nbsp; Создать новую команду, в которую могут вступить такие же
+					безкомандные специалисты;
+				</p>
+				<p class="p-gray">
+					&bull;&nbsp; Также в этом разделе лидеры команд могут найти новых
+					участников для своей команды;
+				</p>
+				<button class="ideabutton">Заполнить резюме</button>
+				<form (submit)="onSubmit()" #resumeForm="ngForm">
+					<div class="form-group">
+						<input
+							type="text"
+							id="name"
+							required
+							[(ngModel)]="name"
+							name="name"
+							class="input-field small"
+							placeholder="Имя и Фамилия"
+						/>
+					</div>
+					<div class="form-group">
+						<p class="roletext">Роль:</p>
+						<select
+							id="role"
+							required
+							[(ngModel)]="role"
+							name="role"
+							class="input-field small form-controlrole"
+						>
+							<option value="backend">Backend</option>
+							<option value="frontend">Frontend</option>
+							<option value="designer">Designer</option>
+							<option value="analyst">Analyst</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<textarea
+							class="input-field big"
+							rows="3"
+							type="text"
+							id="skills"
+							required
+							[(ngModel)]="skills"
+							name="skills"
+							placeholder="Опыт и навыки"
+						></textarea>
+					</div>
+					<button
+						type="submit"
+						class="btn btn-primary"
+						[disabled]="!resumeForm.form.valid || !name || !role || !skills"
+					>
+						Отправить
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
